@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="radius" format="dimension" />
+
+    <declare-styleable name="BottomNavigationBar">
+        <attr name="selectedTextColor" format="color" />
+        <attr name="unselectedTextColor" format="color" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="shadowColor" format="color" />
+        <attr name="shadowAlpha" format="float" />
+        <attr name="radius" />
+    </declare-styleable>
+
+    <declare-styleable name="SegmentView">
+        <attr name="radius" />
+        <attr name="unselectedBackground" format="color"/>
+        <attr name="selectedBackground" format="color" />
+        <attr name="animateCut" format="integer" />
+    </declare-styleable>
+</resources>

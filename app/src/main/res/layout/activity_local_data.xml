@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.LocalDataActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_back"
+        app:title="@string/local_music" />
+
+    <View
+        android:id="@+id/v_top"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <RadioGroup
+        android:id="@+id/segment"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:background="@drawable/bg_color333333_18"
+        android:divider="@drawable/bg_linear_divider"
+        android:dividerPadding="6dp"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:layout_constraintBottom_toBottomOf="@id/v_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/v_top">
+
+        <RadioButton
+            android:id="@+id/rb1"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:button="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/single_music"
+            android:textColor="@color/selector_999999_e35b4d"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb2"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:button="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/dictionary"
+            android:textColor="@color/selector_999999_e35b4d"
+            android:textSize="16sp" />
+
+    </RadioGroup>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_top" />
+
+    <View
+        android:layout_width="@dimen/dp0"
+        android:layout_height="@dimen/dp5"
+        android:background="@drawable/bg_shadow_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_top" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

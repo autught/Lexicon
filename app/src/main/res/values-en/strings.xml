@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Lexicon</string>
+    <string name="generic_error">The application has encountered an unexpected error.</string>
+    <string name="error_media_not_found">Could not locate requested media.</string>
+    <string name="notification_channel">Now Playing</string>
+    <string name="notification_channel_description">Shows what music is currently playing</string>
+    <string name="home">home</string>
+    <string name="mine">mine</string>
+    <string name="right_login">right to login</string>
+    <string name="local_music">local music</string>
+    <string name="recent_run">recent run</string>
+    <string name="my_collect">my collect</string>
+    <string name="single_music">single music</string>
+    <string name="dictionary">dictionary</string>
+    <string name="search">search</string>
+    <string name="no_data">it has no data,please retry for waiting a moment</string>
+</resources>

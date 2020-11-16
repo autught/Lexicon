@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">lexicon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="generic_error">应用程序遇到意外错误。</string>
+    <string name="error_media_not_found">无法找到所请求的媒体。</string>
+    <string name="notification_channel">正在播放</string>
+    <string name="notification_channel_description">显示当前播放的音频</string>
+    <string name="home">首页</string>
+    <string name="mine">我的</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="right_login">立即登陆</string>
+    <string name="local_music">本地音乐</string>
+    <string name="recent_run">最近播放</string>
+    <string name="my_collect">我的收藏</string>
+    <string name="single_music">单曲</string>
+    <string name="dictionary">文件夹</string>
+    <string name="search">搜素</string>
+    <string name="no_data">暂时没有获取到数据，请稍后重试</string>
+</resources>

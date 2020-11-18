@@ -39,7 +39,7 @@ const val NOW_PLAYING_NOTIFICATION_ID = 0xb339 // Arbitrary number used to ident
 class NotificationManager(
     private val context: Context,
     sessionToken: MediaSessionCompat.Token,
-    notificationListener: PlayerNotificationManager.NotificationListener
+    notificationListener: PlayerNotificationManager.NotificationListener,
 ) {
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -93,7 +93,7 @@ class NotificationManager(
 
         override fun getCurrentLargeIcon(
             player: Player,
-            callback: PlayerNotificationManager.BitmapCallback
+            callback: PlayerNotificationManager.BitmapCallback,
         ): Bitmap? {
             val iconUri = controller.metadata.description.iconUri
             return if (currentIconUri != iconUri || currentBitmap == null) {

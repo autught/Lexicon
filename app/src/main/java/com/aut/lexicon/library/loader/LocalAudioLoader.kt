@@ -1,7 +1,6 @@
 package com.aut.lexicon.library.loader
 
 import android.content.Context
-import android.database.Cursor
 import android.provider.MediaStore
 import androidx.loader.content.CursorLoader
 
@@ -16,6 +15,7 @@ class LocalAudioLoader(context: Context) : CursorLoader(
     arrayOf(
         MediaStore.Files.FileColumns._ID,
         MediaStore.MediaColumns.DISPLAY_NAME,
+        MediaStore.MediaColumns.DATA,
         MediaStore.Files.FileColumns.MEDIA_TYPE,
         MediaStore.MediaColumns.SIZE,
         "duration"

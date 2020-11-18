@@ -59,16 +59,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0"
-
-    if (findProject(':exoplayer-library-core') != null) {
-        api project(':exoplayer-library-core')
-        api project(':exoplayer-library-ui')
-        api project(':exoplayer-extension-mediasession')
-        api project(':exoplayer-extension-cast')
-    } else {
-        api "com.google.android.exoplayer:exoplayer-core:2.11.5"
-        api "com.google.android.exoplayer:exoplayer-ui:2.11.5"
-        api "com.google.android.exoplayer:extension-mediasession:2.11.5"
-        api "com.google.android.exoplayer:extension-cast:2.11.5"
-    }
+    implementation "com.google.android.exoplayer:exoplayer-core:2.11.5"
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.11.5"
+    implementation "com.google.android.exoplayer:extension-mediasession:2.11.5"
 }

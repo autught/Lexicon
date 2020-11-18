@@ -15,12 +15,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.aut.lexicon.R
 import com.aut.lexicon.adapter.FragmentAdapter
 import com.aut.lexicon.library.loader.LocalAudioLoader
+import com.aut.lexicon.util.InjectorUtils
 import com.aut.lexicon.viewmodel.LocalDataViewModel
 import kotlinx.android.synthetic.main.activity_local_data.*
 
 
 class LocalDataActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
-    private val localDataViewModel: LocalDataViewModel by viewModels()
+    private val localDataViewModel: LocalDataViewModel by viewModels {
+        InjectorUtils.provideAudioServiceViewModel(this)
+    }
     private lateinit var mLoaderManager: LoaderManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +67,7 @@ class LocalDataActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cur
         getData()
     }
 
-    fun getData() {
+    private fun getData() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         ) {

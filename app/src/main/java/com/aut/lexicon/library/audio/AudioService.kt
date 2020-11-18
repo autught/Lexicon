@@ -14,25 +14,19 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
+import com.aut.lexicon.BuildConfig
 import com.aut.lexicon.R
-import com.aut.lexicon.app.Constants
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.ext.mediasession.RepeatModeActionProvider
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import timber.log.Timber
 
-/**
- * 这个类是浏览和播放从APP的UI的命令的入口节点。从方法[AudioService.onGetRoot]开始浏览，
- * 并在回调[AudioService.onLoadChildren]中继续。
- *
- * 有关实现MediaBrowserService的更多信息，访问
- * [https://developer.android.com/guide/topics/media-apps/audio-app/building-a-mediabrowserservice.html]
- * (https://developer.android.com/guide/topics/media-apps/audio-app/building-a-mediabrowserservice.html).
- */
+
 open class AudioService : MediaBrowserServiceCompat() {
     private lateinit var notificationManager: NotificationManager
     private lateinit var mediaSession: MediaSessionCompat
@@ -41,7 +35,7 @@ open class AudioService : MediaBrowserServiceCompat() {
     private val dataSourceFactory: DefaultDataSourceFactory by lazy {
         DefaultDataSourceFactory(
             this,
-            Util.getUserAgent(this, UAMP_USER_AGENT),
+            Util.getUserAgent(this, LEXICON_USER_AGENT),
             null
         )
     }
@@ -67,7 +61,7 @@ open class AudioService : MediaBrowserServiceCompat() {
                 PendingIntent.getActivity(this, 0, sessionIntent, 0)
             }
 
-        mediaSession = MediaSessionCompat(this, "AudioService")
+        mediaSession = MediaSessionCompat(this, TAG)
             .apply {
                 setSessionActivity(sessionActivityPendingIntent)
                 isActive = true
@@ -83,7 +77,8 @@ open class AudioService : MediaBrowserServiceCompat() {
         // ExoPlayer will manage the MediaSession for us.
         mediaSessionConnector = MediaSessionConnector(mediaSession)
         mediaSessionConnector.setPlaybackPreparer(PlaybackPreparer())
-        mediaSessionConnector.setCustomActionProviders()
+        mediaSessionConnector.setCustomActionProviders(RepeatModeActionProvider(this),
+            ActionProvider())
         mediaSessionConnector.setQueueNavigator(QueueNavigator(mediaSession))
         mediaSessionConnector.setPlayer(exoPlayer)
         notificationManager.showNotificationForPlayer(exoPlayer)
@@ -110,7 +105,8 @@ open class AudioService : MediaBrowserServiceCompat() {
         rootHints: Bundle?,
     ): BrowserRoot? {
         return if (clientPackageName != packageName)
-            BrowserRoot(MEDIA_ID_EMPTY_ROOT, null)
+            if (BuildConfig.DEBUG) BrowserRoot(MEDIA_ID_EMPTY_ROOT, null)
+            else null
         else BrowserRoot(MEDIA_ID_ROOT, null)
     }
 
@@ -121,16 +117,8 @@ open class AudioService : MediaBrowserServiceCompat() {
         result.sendResult(null)
     }
 
-    override fun onSearch(
-        query: String,
-        extras: Bundle?,
-        result: Result<List<MediaItem>>,
-    ) {
-
-    }
-
     private fun preparePlaylist(
-        metadataList: List<MediaMetadataCompat>,
+        metadataList: MutableList<MediaMetadataCompat>,
         itemToPlay: MediaMetadataCompat?,
         playWhenReady: Boolean,
         playbackStartPositionMs: Long,
@@ -153,10 +141,11 @@ open class AudioService : MediaBrowserServiceCompat() {
     private inner class QueueNavigator(
         mediaSession: MediaSessionCompat,
     ) : TimelineQueueNavigator(mediaSession) {
+        /**
+         * 傳入現在播放歌曲的描述，讓 Notification 顯示使用
+         */
         override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat =
             currentPlaylistItems[windowIndex].description
-
-
     }
 
     private inner class PlaybackPreparer : MediaSessionConnector.PlaybackPreparer {
@@ -164,12 +153,8 @@ open class AudioService : MediaBrowserServiceCompat() {
         override fun getSupportedPrepareActions(): Long =
             PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
                     PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID or
-                    PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH or
-                    PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH or
-                    PlaybackStateCompat.ACTION_PREPARE or
-                    PlaybackStateCompat.ACTION_PLAY
-
-
+                    PlaybackStateCompat.ACTION_PREPARE_FROM_URI or
+                    PlaybackStateCompat.ACTION_PLAY_FROM_URI
 
         override fun onPrepare(playWhenReady: Boolean) {
 //            val recentSong = storage.loadRecentSong() ?: return
@@ -185,7 +170,7 @@ open class AudioService : MediaBrowserServiceCompat() {
             playWhenReady: Boolean,
             extras: Bundle?,
         ) {
-//            mediaSource.whenReady {
+//            launch {
 //                val itemToPlay: MediaMetadataCompat? = mediaSource.find { item ->
 //                    item.id == mediaId
 //                }
@@ -211,22 +196,25 @@ open class AudioService : MediaBrowserServiceCompat() {
         }
 
 
+        /**
+         * 透過 Google Assistant 發送的指令會從這個 callback 收到
+         */
+        override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) =
+            Unit
 
-        override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) {
-//            mediaSource.whenReady {
-//                val metadataList = mediaSource.search(query, extras ?: Bundle.EMPTY)
-//                if (metadataList.isNotEmpty()) {
-//                    preparePlaylist(
-//                        metadataList,
-//                        metadataList[0],
-//                        playWhenReady,
-//                        playbackStartPositionMs = C.TIME_UNSET
-//                    )
-//                }
-//            }
+        override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) {
+            val itemToPlay: MediaMetadataCompat = MediaMetadataCompat.Builder().apply {
+                mediaUri = uri.toString()
+            }.build()
+            val list = mutableListOf<MediaMetadataCompat>()
+            list.add(itemToPlay)
+            preparePlaylist(
+                list,
+                itemToPlay,
+                playWhenReady,
+                0
+            )
         }
-
-        override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
 
         override fun onCommand(
             player: Player,
@@ -235,6 +223,34 @@ open class AudioService : MediaBrowserServiceCompat() {
             extras: Bundle?,
             cb: ResultReceiver?,
         ) = false
+    }
+
+    private inner class ActionProvider : MediaSessionConnector.CustomActionProvider {
+
+        override fun onCustomAction(
+            player: Player,
+            controlDispatcher: ControlDispatcher,
+            action: String,
+            extras: Bundle?,
+        ) {
+            // 播放音频列表
+            if (CUSTOM_ACTION_MUSIC_PLAY_QUEUE == action) {
+                extras?.apply {
+                    classLoader = MediaDescriptionCompat::class.java.classLoader
+                    val list: List<MediaMetadataCompat> =
+                        getParcelableArrayList(KEY_MUSIC_QUEUE) ?: return
+                    val index = getInt(KEY_MUSIC_QUEUE_PLAY_INDEX, 0)
+                    preparePlaylist(list.toMutableList(), list[index], true, C.TIME_UNSET)
+                }
+            }
+        }
+
+        override fun getCustomAction(player: Player): PlaybackStateCompat.CustomAction? {
+            return PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_MUSIC_PLAY_QUEUE,
+                "set queue",
+                0).build()
+        }
+
     }
 
     private inner class PlayerNotificationListener :
@@ -321,7 +337,32 @@ open class AudioService : MediaBrowserServiceCompat() {
     }
 }
 
-private const val UAMP_USER_AGENT = "uamp.next"
+private const val LEXICON_USER_AGENT = "lexicon.next"
 
 const val MEDIA_ID_EMPTY_ROOT = "__EMPTY_ROOT__"
 const val MEDIA_ID_ROOT = "__ROOT__"
+const val TAG = "AudioService"
+
+/**
+ * action
+ */
+// 播放音频列表
+const val CUSTOM_ACTION_MUSIC_PLAY_QUEUE = "com.netease.awakeing.music.MUSIC_QUEUE_PLAY"
+
+// 更新队列
+const val CUSTOM_ACTION_MUSIC_UPDATE_QUEUE = "com.netease.awakeing.music.MUSIC_QUEUE_UPDATE"
+
+// 重置队列
+const val CUSTOM_ACTION_MUSIC_QUEUE_RESET = "com.netease.awakeing.music.MUSIC_QUEUE_RESET"
+
+/**
+ * key
+ */
+// 音频队列数据
+const val KEY_MUSIC_QUEUE = "com.netease.awakeing.music.KEY_MUSIC_QUEUE"
+
+// 音频队列的title数据
+const val KEY_MUSIC_QUEUE_TITLE = "com.netease.awakeing.music.KEY_MUSIC_QUEUE_TITLE"
+
+// 播放index，小于0表示不播
+const val KEY_MUSIC_QUEUE_PLAY_INDEX = "com.netease.awakeing.music.KEY_MUSIC_QUEUE_PLAY_INDEX"

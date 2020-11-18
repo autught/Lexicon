@@ -35,7 +35,7 @@ import androidx.media.MediaBrowserServiceCompat
  * - [MediaBrowserCompat.ConnectionCallback.onConnected] is the best place to construct
  *   a [MediaControllerCompat] that will be used to control the [MediaSessionCompat].
  */
-class MusicServiceConnection(context: Context, serviceComponent: ComponentName) {
+class AudioServiceConnection(context: Context, serviceComponent: ComponentName) {
     val isConnected = MutableLiveData<Boolean>()
         .apply { postValue(false) }
     val networkFailure = MutableLiveData<Boolean>()
@@ -159,11 +159,11 @@ class MusicServiceConnection(context: Context, serviceComponent: ComponentName) 
     companion object {
         // For Singleton instantiation.
         @Volatile
-        private var instance: MusicServiceConnection? = null
+        private var instance: AudioServiceConnection? = null
 
         fun getInstance(context: Context, serviceComponent: ComponentName) =
             instance ?: synchronized(this) {
-                instance ?: MusicServiceConnection(context, serviceComponent)
+                instance ?: AudioServiceConnection(context, serviceComponent)
                     .also { instance = it }
             }
     }

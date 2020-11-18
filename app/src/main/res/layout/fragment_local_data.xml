@@ -16,8 +16,8 @@
         android:layout_height="match_parent"
         android:dividerHeight="@dimen/px1" />
 
-    <include
-        android:id="@+id/empty"
-        layout="@layout/layout_no_data" />
+<!--    <include-->
+<!--        android:id="@+id/empty"-->
+<!--        layout="@layout/layout_no_data" />-->
 
 </FrameLayout>

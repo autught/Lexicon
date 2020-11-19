@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cursoradapter.widget.CursorAdapter
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aut.lexicon.R
-import com.aut.lexicon.library.loader.AudioItemData
 import com.aut.lexicon.library.rv.AdapterX
-import kotlinx.android.synthetic.main.fragment_local_data.*
 
 class DictionaryDataFragment : Fragment() {
     private lateinit var adapter: AdapterX

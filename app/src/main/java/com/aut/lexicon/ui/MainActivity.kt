@@ -2,19 +2,16 @@ package com.aut.lexicon.ui
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.aut.lexicon.R
-import com.aut.lexicon.util.InjectorUtils
-import com.aut.lexicon.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainActivityViewModel by viewModels {
-        InjectorUtils.provideAudioServiceViewModel(this)
-    }
+//    private val viewModel: MainActivityViewModel by viewModels {
+//        InjectorUtils.provideAudioServiceViewModel(this)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +27,5 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.container, HomeFragment.newInstance())
             .commit()
     }
-
 
 }

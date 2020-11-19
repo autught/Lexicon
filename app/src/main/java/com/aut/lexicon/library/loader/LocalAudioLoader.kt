@@ -15,10 +15,8 @@ class LocalAudioLoader(context: Context) : CursorLoader(
     arrayOf(
         MediaStore.Files.FileColumns._ID,
         MediaStore.MediaColumns.DISPLAY_NAME,
-        MediaStore.MediaColumns.DATA,
         MediaStore.Files.FileColumns.MEDIA_TYPE,
-        MediaStore.MediaColumns.SIZE,
-        "duration"
+        MediaStore.MediaColumns.SIZE
     ),
     MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0",

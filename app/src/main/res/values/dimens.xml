@@ -23,4 +23,6 @@
     <dimen name="sp15">15sp</dimen>
     <dimen name="dp25">25dp</dimen>
     <dimen name="sp13">13sp</dimen>
+    <dimen name="dp45">45dp</dimen>
+    <dimen name="dp30">30dp</dimen>
 </resources>

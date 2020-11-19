@@ -77,8 +77,8 @@ open class AudioService : MediaBrowserServiceCompat() {
         // ExoPlayer will manage the MediaSession for us.
         mediaSessionConnector = MediaSessionConnector(mediaSession)
         mediaSessionConnector.setPlaybackPreparer(PlaybackPreparer())
-        mediaSessionConnector.setCustomActionProviders(RepeatModeActionProvider(this),
-            ActionProvider())
+//        mediaSessionConnector.setCustomActionProviders(RepeatModeActionProvider(this),
+//            ActionProvider())
         mediaSessionConnector.setQueueNavigator(QueueNavigator(mediaSession))
         mediaSessionConnector.setPlayer(exoPlayer)
         notificationManager.showNotificationForPlayer(exoPlayer)
@@ -225,33 +225,33 @@ open class AudioService : MediaBrowserServiceCompat() {
         ) = false
     }
 
-    private inner class ActionProvider : MediaSessionConnector.CustomActionProvider {
-
-        override fun onCustomAction(
-            player: Player,
-            controlDispatcher: ControlDispatcher,
-            action: String,
-            extras: Bundle?,
-        ) {
-            // 播放音频列表
-            if (CUSTOM_ACTION_MUSIC_PLAY_QUEUE == action) {
-                extras?.apply {
-                    classLoader = MediaDescriptionCompat::class.java.classLoader
-                    val list: List<MediaMetadataCompat> =
-                        getParcelableArrayList(KEY_MUSIC_QUEUE) ?: return
-                    val index = getInt(KEY_MUSIC_QUEUE_PLAY_INDEX, 0)
-                    preparePlaylist(list.toMutableList(), list[index], true, C.TIME_UNSET)
-                }
-            }
-        }
-
-        override fun getCustomAction(player: Player): PlaybackStateCompat.CustomAction? {
-            return PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_MUSIC_PLAY_QUEUE,
-                "set queue",
-                0).build()
-        }
-
-    }
+//    private inner class ActionProvider : MediaSessionConnector.CustomActionProvider {
+//
+//        override fun onCustomAction(
+//            player: Player,
+//            controlDispatcher: ControlDispatcher,
+//            action: String,
+//            extras: Bundle?,
+//        ) {
+//            // 播放音频列表
+//            if (CUSTOM_ACTION_MUSIC_PLAY_QUEUE == action) {
+//                extras?.apply {
+//                    classLoader = MediaDescriptionCompat::class.java.classLoader
+//                    val list: List<MediaMetadataCompat> =
+//                        getParcelableArrayList(KEY_MUSIC_QUEUE) ?: return
+//                    val index = getInt(KEY_MUSIC_QUEUE_PLAY_INDEX, 0)
+//                    preparePlaylist(list.toMutableList(), list[index], true, C.TIME_UNSET)
+//                }
+//            }
+//        }
+//
+//        override fun getCustomAction(player: Player): PlaybackStateCompat.CustomAction? {
+//            return PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_MUSIC_PLAY_QUEUE,
+//                "set queue",
+//                0).build()
+//        }
+//
+//    }
 
     private inner class PlayerNotificationListener :
         PlayerNotificationManager.NotificationListener {
@@ -336,7 +336,10 @@ open class AudioService : MediaBrowserServiceCompat() {
         }
     }
 }
-
+/*
+ * (Media) Session events
+ */
+const val NETWORK_FAILURE = "com.example.android.uamp.media.session.NETWORK_FAILURE"
 private const val LEXICON_USER_AGENT = "lexicon.next"
 
 const val MEDIA_ID_EMPTY_ROOT = "__EMPTY_ROOT__"

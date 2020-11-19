@@ -1,26 +1,8 @@
-/*
- * Copyright 2018 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.aut.lexicon.library.audio
 
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -29,19 +11,12 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.media.MediaBrowserServiceCompat
 
-/**
- * - A [MediaBrowserConnectionCallback] is a parameter into the construction of
- *   a [MediaBrowserCompat], and provides callbacks to this class.
- * - [MediaBrowserCompat.ConnectionCallback.onConnected] is the best place to construct
- *   a [MediaControllerCompat] that will be used to control the [MediaSessionCompat].
- */
+
 class AudioServiceConnection(context: Context, serviceComponent: ComponentName) {
     val isConnected = MutableLiveData<Boolean>()
         .apply { postValue(false) }
     val networkFailure = MutableLiveData<Boolean>()
         .apply { postValue(false) }
-
-    val rootMediaId: String get() = mediaBrowser.root
 
     val playbackState = MutableLiveData<PlaybackStateCompat>()
         .apply { postValue(EMPTY_PLAYBACK_STATE) }
@@ -57,33 +32,28 @@ class AudioServiceConnection(context: Context, serviceComponent: ComponentName) 
         serviceComponent,
         mediaBrowserConnectionCallback, null
     ).apply { connect() }
+
     private lateinit var mediaController: MediaControllerCompat
 
-    fun subscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
-        mediaBrowser.subscribe(parentId, callback)
-    }
-
-    fun unsubscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
-        mediaBrowser.unsubscribe(parentId, callback)
-    }
-
-    fun sendCommand(command: String, parameters: Bundle?) =
-        sendCommand(command, parameters) { _, _ -> }
-
-    fun sendCommand(
-        command: String,
-        parameters: Bundle?,
-        resultCallback: ((Int, Bundle?) -> Unit)
-    ) = if (mediaBrowser.isConnected) {
-        mediaController.sendCommand(command, parameters, object : ResultReceiver(Handler()) {
-            override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                resultCallback(resultCode, resultData)
-            }
-        })
-        true
-    } else {
-        false
-    }
+//    fun sendCommand(command: String, parameters: Bundle?) =
+//        sendCommand(command, parameters) { _, _ -> }
+//
+//    fun sendCommand(
+//        command: String,
+//        parameters: Bundle?,
+//        resultCallback: ((Int, Bundle?) -> Unit),
+//    ) = if (mediaBrowser.isConnected) {
+//        mediaController.sendCommand(command,
+//            parameters,
+//            object : ResultReceiver(Looper.myLooper()?.run { Handler(this) }) {
+//                override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+//                    resultCallback(resultCode, resultData)
+//                }
+//            })
+//        true
+//    } else {
+//        false
+//    }
 
     private inner class MediaBrowserConnectionCallback(private val context: Context) :
         MediaBrowserCompat.ConnectionCallback() {
@@ -140,9 +110,9 @@ class AudioServiceConnection(context: Context, serviceComponent: ComponentName) 
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {
             super.onSessionEvent(event, extras)
-//            when (event) {
-//                NETWORK_FAILURE -> networkFailure.postValue(true)
-//            }
+            when (event) {
+                NETWORK_FAILURE -> networkFailure.postValue(true)
+            }
         }
 
         /**

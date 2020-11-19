@@ -1,10 +1,13 @@
 package com.aut.lexicon.ui
 
-import android.net.Uri
+import android.content.ContentUris
+import android.database.Cursor
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.aut.lexicon.R
@@ -28,20 +31,14 @@ class SingleDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = AudioDataCursorAdapter(context)
-        adapter.onItemChildClickListener =
-            object : AudioDataCursorAdapter.OnItemChildClickListener {
-                override fun onItemChildClick(uri: Uri) {
-                    localDataViewModel.playMedia(uri)
-                }
-
-            }
         list.adapter = adapter
-//        list.emptyView = empty
-//        list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-//            val item = list.getItemAtPosition(position) as Cursor
-//            localDataViewModel.playMedia(item.getString(item.getColumnIndex(MediaStore.MediaColumns.DATA))
-//                .toUri())
-//        }
+        list.emptyView = empty
+        list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val item = list.getItemAtPosition(position) as Cursor
+            val id = item.getLong(item.getColumnIndex(MediaStore.Files.FileColumns._ID))
+            val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id)
+            localDataViewModel.playMedia(uri)
+        }
         localDataViewModel.singleData.observe(viewLifecycleOwner, {
             adapter.changeCursor(it)
         })

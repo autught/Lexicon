@@ -14,4 +14,7 @@
     <string name="dictionary">dictionary</string>
     <string name="search">search</string>
     <string name="no_data">it has no data,please retry for waiting a moment</string>
+    <string name="menu">menu</string>
+    <string name="next_music">next music</string>
+    <string name="toggle_play_state">toggle play state</string>
 </resources>

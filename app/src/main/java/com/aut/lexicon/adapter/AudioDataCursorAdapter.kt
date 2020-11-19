@@ -21,7 +21,6 @@ class AudioDataCursorAdapter(
     context: Context?,
 ) : CursorAdapter(context, null, true) {
     private val inflater = LayoutInflater.from(context)
-     var onItemChildClickListener :OnItemChildClickListener?=null
 
     override fun bindView(view: View?, context: Context?, cursor: Cursor?) {
         val tvTitle = view?.findViewById<TextView>(R.id.tv_title)
@@ -36,9 +35,6 @@ class AudioDataCursorAdapter(
             }
             tvTitle?.text = title
             tvSubTitle?.text = artist ?: "未知"
-            tvTitle?.setOnClickListener { v ->
-                onItemChildClickListener?.onItemChildClick(it.getString(it.getColumnIndex(MediaStore.MediaColumns.DATA)).toUri())
-            }
         }
 
     }
@@ -47,7 +43,4 @@ class AudioDataCursorAdapter(
         return inflater.inflate(R.layout.item_local_data_single, parent, false)
     }
 
-    interface OnItemChildClickListener {
-        fun onItemChildClick(uri: Uri)
-    }
 }

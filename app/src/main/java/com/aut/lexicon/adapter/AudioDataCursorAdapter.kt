@@ -30,8 +30,8 @@ class AudioDataCursorAdapter(
             var artist: String? = null
             if (title.contains("-")) {
                 val str: List<String> = title.split("-")
-                title = str[0]
-                artist = str[1]
+                title = str[1]
+                artist = str[0]
             }
             tvTitle?.text = title
             tvSubTitle?.text = artist ?: "未知"

@@ -2,14 +2,11 @@ package com.aut.lexicon.viewmodel
 
 import android.database.Cursor
 import android.net.Uri
-import android.support.v4.media.MediaMetadataCompat
-import android.support.v4.media.session.PlaybackStateCompat
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.aut.lexicon.R
 import com.aut.lexicon.library.audio.*
 import com.aut.lexicon.util.Event
 import timber.log.Timber
@@ -47,7 +44,7 @@ class LocalDataViewModel(private val connection: AudioServiceConnection) : ViewM
         _singleData.value = cursor
     }
 
-    fun playMedia(uri: Uri) {
+    fun playMedia(uri: Uri, bundle: Bundle) {
         val nowPlaying = connection.nowPlaying.value
         val transportControls = connection.transportControls
 
@@ -62,7 +59,7 @@ class LocalDataViewModel(private val connection: AudioServiceConnection) : ViewM
                 }
             }
         } else {
-            transportControls.playFromUri(uri, null)
+            transportControls.playFromUri(uri, bundle)
         }
     }
 

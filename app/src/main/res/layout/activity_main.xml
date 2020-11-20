@@ -10,19 +10,27 @@
         android:id="@+id/toolbar"
         android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/icon_menu_navigation"
         android:background="@color/colorPrimary"
-        app:titleTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_home"/>
+        app:menu="@menu/menu_home"
+        app:navigationIcon="@drawable/icon_menu_navigation"
+        app:titleTextColor="@color/colorAccent" />
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/bot_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/top_container"
         android:layout_width="@dimen/dp0"
         android:layout_height="@dimen/dp0"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bot_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />

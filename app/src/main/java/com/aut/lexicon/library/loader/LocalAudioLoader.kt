@@ -14,14 +14,14 @@ class LocalAudioLoader(context: Context) : CursorLoader(
     MediaStore.Files.getContentUri("external"),
     arrayOf(
         MediaStore.Files.FileColumns._ID,
-        MediaStore.MediaColumns.DISPLAY_NAME,
+        MediaStore.Files.FileColumns.DISPLAY_NAME,
         MediaStore.Files.FileColumns.MEDIA_TYPE,
-        MediaStore.MediaColumns.SIZE
+        MediaStore.Files.FileColumns.SIZE
     ),
     MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0",
+            + " AND " + MediaStore.Files.FileColumns.SIZE + ">0",
     arrayOf(
         MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO.toString()
     ),
-    "datetaken DESC"
+    null
 )

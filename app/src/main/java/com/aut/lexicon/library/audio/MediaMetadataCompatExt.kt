@@ -88,8 +88,8 @@ inline val MediaMetadataCompat.artUri: Uri
 inline val MediaMetadataCompat.albumArt: Bitmap?
     get() = getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART)
 
-inline val MediaMetadataCompat.albumArtUri: Uri
-    get() = this.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI).toUri()
+inline val MediaMetadataCompat.albumArtUri: Uri?
+    get() = this.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI)?.toUri() ?: Uri.EMPTY
 
 inline val MediaMetadataCompat.userRating
     get() = getLong(MediaMetadataCompat.METADATA_KEY_USER_RATING)

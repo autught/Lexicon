@@ -17,4 +17,6 @@
     <string name="menu">menu</string>
     <string name="next_music">next music</string>
     <string name="toggle_play_state">toggle play state</string>
+    <string name="duration_unknown">--:--</string>
+    <string name="duration_format">%d:%02d</string>
 </resources>

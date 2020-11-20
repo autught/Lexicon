@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity() {
             return@OnMenuItemClickListener true
         })
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, HomeFragment.newInstance())
+            .replace(R.id.bot_container, MediaPlayFragment.newInstance())
+            .replace(R.id.top_container, HomeFragment.newInstance())
             .commit()
     }
 

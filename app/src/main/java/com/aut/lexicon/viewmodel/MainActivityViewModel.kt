@@ -7,7 +7,7 @@ import com.aut.lexicon.library.audio.AudioServiceConnection
 import com.aut.lexicon.library.bottomnavigation.BottomNavigationEntity
 import com.aut.lexicon.util.Event
 
-class MainActivityViewModel(private val connection: AudioServiceConnection) : ViewModel() {
+class MainActivityViewModel: ViewModel() {
 
     val navigationEntities: LiveData<Event<MutableList<BottomNavigationEntity>>> get() = _navigationEntities
     private val _navigationEntities = MutableLiveData<Event<MutableList<BottomNavigationEntity>>>()

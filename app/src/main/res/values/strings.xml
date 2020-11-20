@@ -20,4 +20,6 @@
     <string name="menu">菜单</string>
     <string name="next_music">下一首</string>
     <string name="toggle_play_state">切换播放状态</string>
+    <string name="duration_unknown">--:--</string>
+    <string name="duration_format" >%d:%02d</string>
 </resources>

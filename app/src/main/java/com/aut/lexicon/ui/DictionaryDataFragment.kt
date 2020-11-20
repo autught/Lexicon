@@ -24,7 +24,7 @@ class DictionaryDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = AdapterX.newInstance {
-            addType<AudioItemData>(R.layout.item_local_data_dictionary, { data, holder, position ->
+            addType<String>(R.layout.item_local_data_dictionary, { _, holder, position ->
                 holder.findViewById<TextView>(R.id.tv_title)?.text = "最美的期待"
                 holder.findViewById<TextView>(R.id.tv_path)?.text = "李宇春"
                 holder.findViewById<ImageButton>(R.id.ib_add)?.setOnClickListener {

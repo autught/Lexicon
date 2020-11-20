@@ -19,7 +19,6 @@ import com.aut.lexicon.R
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.ext.mediasession.RepeatModeActionProvider
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -203,9 +202,11 @@ open class AudioService : MediaBrowserServiceCompat() {
             Unit
 
         override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) {
-            val itemToPlay: MediaMetadataCompat = MediaMetadataCompat.Builder().apply {
-                mediaUri = uri.toString()
-            }.build()
+            val itemToPlay: MediaMetadataCompat =
+                extras?.getParcelable("data") ?: MediaMetadataCompat.Builder()
+                    .apply {
+                        mediaUri = uri.toString()
+                    }.build()
             val list = mutableListOf<MediaMetadataCompat>()
             list.add(itemToPlay)
             preparePlaylist(
@@ -336,6 +337,7 @@ open class AudioService : MediaBrowserServiceCompat() {
         }
     }
 }
+
 /*
  * (Media) Session events
  */
